@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Usuarios</title>
+</head>
+<body>
+    <h1 class="titulo-usuario"> Cadastre aqui o seus usuários !</h1>
+    <form action="/usuarios" method="POST">
+        <input class="input-user" type="text" name="name" placeholder="Digite o nome do usuário" required>
+        <input class="input-user" type="email" name="email" placeholder="Digite o email do usuário" required>
+        <input class="input-user" type="checkbox" name="ativo" placeholder="Ativo"> Ativo
+        <br>
+        <button class="cadastrar-usuario" type="submit" >Cadastrar</button>
+    </form>
+</body>
+</html>

@@ -9,10 +9,10 @@ class Usuario(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=True)
-    email  = db.Column(db.String(120), unique=True)
+    email = db.Column(db.String(120), unique=True)
     ativo = db.Column(db.Boolean, default=True)
 
-    #relationship para facilitar futuras consultas no banco
+    # Um usuário pode possuir vários cursos
     cursos = db.relationship("Curso", back_populates="usuario")
 
 
@@ -24,7 +24,7 @@ class Curso(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     usuario_id = db.Column(
         db.Integer,
-        foreign_key=("USUARIOS.id"),
+        db.ForeignKey("USUARIOS.id"),
         nullable=False    
     )
     titulo = db.Column(db.String, unique=True)
@@ -32,8 +32,8 @@ class Curso(db.Model):
     plataforma = db.Column(db.String, unique=True)
     progresso = db.Column(db.Integer, default=0)
     status = db.Column(db.Integer, default=1)
-
-    cursos = db.relationship("Usuario", back_populates="cursos")
+    # Curso pertence a um usuário
+    usuario = db.relationship("Usuario", back_populates="cursos")
 
 
 
