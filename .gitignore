@@ -1,0 +1,20 @@
+# Ambiente virtual
+.venvFlask/
+venv/
+.venv/
+
+# Cache do Python
+__pycache__/
+*.pyc
+
+# Banco SQLite / pasta instance do Flask
+instance/
+*.db
+*.sqlite
+*.sqlite3
+
+# Variaveis de ambiente
+.env
+
+# Arquivos do  vscode
+.vscode/
