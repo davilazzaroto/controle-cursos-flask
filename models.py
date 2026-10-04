@@ -10,6 +10,7 @@ class Usuario(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=True)
     email = db.Column(db.String(120), unique=True)
+    senha = db.Column(db.String(255), nullable=False)
     ativo = db.Column(db.Boolean, default=True)
 
     # Um usuário pode possuir vários cursos
@@ -27,9 +28,9 @@ class Curso(db.Model):
         db.ForeignKey("USUARIOS.id"),
         nullable=False    
     )
-    titulo = db.Column(db.String, unique=True)
+    titulo = db.Column(db.String, nullable=False)
     descricao = db.Column(db.Text,nullable=False)
-    plataforma = db.Column(db.String, unique=True)
+    plataforma = db.Column(db.String, nullable=False)
     progresso = db.Column(db.Integer, default=0)
     status = db.Column(db.Integer, default=1)
     # Curso pertence a um usuário
