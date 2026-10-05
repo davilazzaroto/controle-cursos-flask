@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cursos Cadastrados</title>
+  </head>
+  <body>
+    <h1>Cursos Cadastrados</h1>
+    <ul>
+      {% for curso in usuario.cursos %}
+      <li>{{ curso.titulo }}</li>
+      {% endfor %} {% if usuario.cursos|length == 0 %}
+      <p>Nenhum curso cadastrado.</p>
+      {% endif %}
+    </ul>
+    <form action="{{ url_for('novo_curso') }}" method="GET">
+      <input type="submit" value="Cadastrar Novo Curso" />
+    </form>
+  </body>
+</html>

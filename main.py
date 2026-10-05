@@ -15,7 +15,7 @@ db.init_app(app)
 def home():
     return render_template("index.html")
 
-
+#Responsável por cadastrar o usuário e redirecionar para a página de cadastro
 @app.route("/cadastrar", methods=["GET", "POST"])
 def cadastrar():
     if request.method == "POST":
@@ -27,42 +27,65 @@ def cadastrar():
         db.session.add(usuario)
         db.session.commit()
     usuarios = Usuario.query.all()
-    return """
-            <h1>Cadastro Realizado com Sucesso!</h1>
-            <a href="/login">Fazer Login</a>
-            """
-            # render_template("cadastro.html", usuarios=usuarios)
+    return render_template("cadastro.html", usuarios=usuarios)
 
+
+#REsponsável por tratar o erro 404 e redirecionar para a página de erro
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template("page_not_found.html"), 404
 
-
+#Responsavel por fazer o login do usuário e redirecionar para a página de logado
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        name = request.form["login-nome"]
         senha = request.form["login-senha"]
         email = request.form["login-email"]
-        usuario = Usuario.query.filter_by(name=name, email=email).first()
+        usuario = Usuario.query.filter_by(email=email).first()
         if usuario and check_password_hash(usuario.senha, senha):
             session["usuario_id"] = usuario.id
-            return redirect(url_for("logado"))
+            return redirect(url_for("cursos"))
         else:
             return redirect(url_for("login"))
 
     return render_template("login.html")
 
-
-@app.route("/logado")
-def logado():
+#Responsável por verificar se o usuário está logado e redirecionar para a página de logado
+@app.route("/cursos")
+def cursos():
     if "usuario_id" in session:
         usuario_id = session["usuario_id"]
-        usuario = Usuario.query.get(usuario_id)
-        return render_template("logado.html", usuario=usuario)
+        usuario = db.session.get(Usuario, usuario_id)
+        return render_template("cursos.html", usuario=usuario)
     else:
         return redirect(url_for("login"))
 
+@app.route("/novo-curso", methods=["GET", "POST"])
+def novo_curso():
+    if "usuario_id" not in session:
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        usuario_id = session["usuario_id"]
+        titulo = request.form["titulo"]
+        descricao = request.form["descricao"]
+        plataforma = request.form["plataforma"]
+        progresso = int(request.form.get("progresso", 0))
+        status = int(request.form.get("status", 1))
+
+        curso = Curso(
+            usuario_id=usuario_id,
+            titulo=titulo,
+            descricao=descricao,
+            plataforma=plataforma,
+            progresso=progresso,
+            status=status
+        )
+        db.session.add(curso)
+        db.session.commit()
+        return redirect(url_for("cursos"))
+
+    return render_template("novo_curso.html")
 
 # cria as tabelas que ainda não existem, sem recriar as ja presentes
 if __name__ == "__main__":
