@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ curso.titulo }}</title>
+</head>
+<body>
+   <p>{{ curso.descricao }} </p> 
+    <br>
+    <p><strong>Progresso:</strong> {{ curso.progresso }}</p>
+    <button> +10</button>
+    <br>
+    <p><strong>Plataforma:</strong> {{ curso.plataforma }}</p>
+    <br>
+    {% if curso.status == 1 %}
+        <p><strong>Status:</strong> Ativo</p>
+    {% else %}
+        <p><strong>Status:</strong> Inativo</p>
+    {% endif %}
+    <br>
+    <button><a href="{{ url_for('cursos') }}">Voltar</a></button> 
+</body>
+</html>

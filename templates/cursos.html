@@ -9,8 +9,9 @@
     <h1>Cursos Cadastrados</h1>
     <ul>
       {% for curso in usuario.cursos %}
-      <li>{{ curso.titulo }}</li>
-      {% endfor %} {% if usuario.cursos|length == 0 %}
+      <li>{{ curso.titulo }} ➡ {{ curso.plataforma }} <a href="{{ url_for('detalhe_curso', id=curso.id) }}">Detalhes</a></li>
+      {% endfor %}
+      {% if usuario.cursos | length == 0 %}
       <p>Nenhum curso cadastrado.</p>
       {% endif %}
     </ul>

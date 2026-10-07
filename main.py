@@ -60,6 +60,7 @@ def cursos():
     else:
         return redirect(url_for("login"))
 
+#Responsável por cadastrar o curso e redirecionar para a página de cadastro
 @app.route("/novo-curso", methods=["GET", "POST"])
 def novo_curso():
     if "usuario_id" not in session:
@@ -86,6 +87,17 @@ def novo_curso():
         return redirect(url_for("cursos"))
 
     return render_template("novo_curso.html")
+
+@app.route("/cursos/<int:id>")
+def detalhe_curso(id):
+    curso = Curso.query.get(id)
+    if curso:
+        return render_template("detalhes_curso.html", curso=curso)
+    else:
+        return redirect(url_for("cursos"))
+
+    
+    # O Flask pega o número passado na URL e injeta no parâmetro 'id' da função!
 
 # cria as tabelas que ainda não existem, sem recriar as ja presentes
 if __name__ == "__main__":
