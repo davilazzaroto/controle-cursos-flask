@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cadastro de Usuarios</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
   </head>
   <body>
     <h1 class="titulo-usuario">Faça login ou se cadastre</h1>
@@ -33,7 +34,7 @@
         name="senha"
         placeholder="Informe uma senha forte"
       />
-      <br/>
+      <br />
       <button class="cadastrar-usuario" type="submit">Cadastrar</button>
     </form>
     <button><a href="/">Voltar</a></button>

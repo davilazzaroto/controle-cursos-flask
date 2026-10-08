@@ -4,21 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ curso.titulo }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+    <form class="card" action="{{ url_for('atualizar_progresso', id=curso.id) }}" method="POST">
    <p>{{ curso.descricao }} </p> 
     <br>
-    <p><strong>Progresso:</strong> {{ curso.progresso }}</p>
-    <button> +10</button>
+    <p ><strong>Progresso:</strong> {{ curso.progresso }}%</p>
+    <button type="submit" {% if curso.progresso >= 100 %}disabled{% endif %}>+10%</button>
     <br>
     <p><strong>Plataforma:</strong> {{ curso.plataforma }}</p>
     <br>
     {% if curso.status == 1 %}
         <p><strong>Status:</strong> Ativo</p>
+    {% elif curso.status == 2 %}
+        <p><strong>Status:</strong> Concluído</p>
     {% else %}
         <p><strong>Status:</strong> Inativo</p>
     {% endif %}
+    </form>
     <br>
     <button><a href="{{ url_for('cursos') }}">Voltar</a></button> 
+    
 </body>
 </html>

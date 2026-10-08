@@ -51,7 +51,7 @@ def login():
     return render_template("login.html")
 
 #Responsável por verificar se o usuário está logado e redirecionar para a página de logado
-@app.route("/cursos")
+@app.route("/cursos", methods=['POST','GET'])
 def cursos():
     if "usuario_id" in session:
         usuario_id = session["usuario_id"]
@@ -88,16 +88,44 @@ def novo_curso():
 
     return render_template("novo_curso.html")
 
+# O Flask pega o número passado na URL e injeta no parâmetro 'id' da função
 @app.route("/cursos/<int:id>")
 def detalhe_curso(id):
-    curso = Curso.query.get(id)
-    if curso:
+
+    if not "usuario_id" in session:
+        return redirect(url_for("login"))
+
+    curso = db.get_or_404(Curso, id)
+    if curso.usuario_id == session["usuario_id"]:
         return render_template("detalhes_curso.html", curso=curso)
     else:
         return redirect(url_for("cursos"))
 
-    
-    # O Flask pega o número passado na URL e injeta no parâmetro 'id' da função!
+@app.route("/cursos/<int:id>/progresso", methods=["POST"])
+def atualizar_progresso(id):
+    if not "usuario_id" in session:
+        return redirect(url_for("login"))
+
+    curso = db.get_or_404(Curso, id)
+    if curso and curso.usuario_id == session["usuario_id"]:
+        curso.progresso = min((curso.progresso or 0) + 10, 100)
+        if curso.progresso == 100:
+            curso.status = 2  # Marca como concluído
+        db.session.commit()
+        return redirect(url_for("detalhe_curso", id=curso.id))
+    else:
+        return redirect(url_for("cursos"))
+
+@app.route("/cursos/<int:id>/excluir", methods=["POST",'GET'])
+def excluir_curso(id):
+    if not "usuario_id" in session:
+        return redirect(url_for("login"))
+
+    curso = Curso.query.get(id)
+    if curso and curso.usuario_id == session["usuario_id"]:
+        db.session.delete(curso)
+        db.session.commit()
+    return redirect(url_for("cursos"))
 
 # cria as tabelas que ainda não existem, sem recriar as ja presentes
 if __name__ == "__main__":

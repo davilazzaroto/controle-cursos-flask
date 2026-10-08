@@ -4,14 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cursos Cadastrados</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
   </head>
   <body>
     <h1>Cursos Cadastrados</h1>
     <ul>
       {% for curso in usuario.cursos %}
-      <li>{{ curso.titulo }} ➡ {{ curso.plataforma }} <a href="{{ url_for('detalhe_curso', id=curso.id) }}">Detalhes</a></li>
-      {% endfor %}
-      {% if usuario.cursos | length == 0 %}
+      <li>
+        {{ curso.titulo }} ➡ {{ curso.plataforma }}
+        <a href="{{ url_for('detalhe_curso', id=curso.id) }}">Detalhes</a>
+        <a
+          href="{{ url_for('excluir_curso', id=curso.id) }}"
+          onclick="
+            return confirm('Tem certeza que deseja excluir este curso?', method='POST');
+          "
+          >Excluir</a
+        >
+      </li>
+      {% endfor %} {% if usuario.cursos | length == 0 %}
       <p>Nenhum curso cadastrado.</p>
       {% endif %}
     </ul>
